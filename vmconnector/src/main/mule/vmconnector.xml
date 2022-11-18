@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="8fce3c88-25a7-41ad-8594-128be26616c6" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<vm:config name="VM_Config" doc:name="VM Config" doc:id="0fc52bbd-f390-47c4-b35e-db99e2096c8a" >
+		<vm:queues >
+			<vm:queue queueName="myque" />
+		</vm:queues>
+	</vm:config>
+	<flow name="vmconnectorFlow" doc:id="78d686dd-f1dd-4307-8797-8d404f834cea" >
+		<http:listener doc:name="Listener" doc:id="b39aa2ff-5a1c-4bb4-ba59-94b0712c846c" config-ref="HTTP_Listener_config" path="vm"/>
+		<vm:publish doc:name="Publish" doc:id="ef40427e-5e8b-4fa8-bd39-d7c6f405946c" config-ref="VM_Config" queueName="myque"/>
+		<logger level="INFO" doc:name="Logger" doc:id="20aa9485-2344-40d5-8e53-058cfc222f89" message="#[payload]"/>
+	</flow>
+	<flow name="vmconnectorFlow1" doc:id="880490ea-e8fe-4356-b0e9-c88bc47002ee" >
+		<vm:listener doc:name="Listener" doc:id="1f614832-7609-4a27-a33c-2e1d039ae24d" config-ref="VM_Config" queueName="myque"/>
+		<logger level="INFO" doc:name="Logger" doc:id="2a23ccf1-5b1b-4bde-81f1-2eefad3cac3a" message="#[payload]"/>
+	</flow>
+	<flow name="vmconnectorFlow2" doc:id="13392bd8-2d72-43f7-a37d-659bafcd35be" >
+		<http:listener doc:name="Listener" doc:id="0d061545-3ef8-4afd-84f5-51b69d38307b" config-ref="HTTP_Listener_config" path="consume"/>
+		<vm:consume queueName="myque" doc:name="Consume" doc:id="14d9e376-134b-4236-8633-b40e37c6ac6b" config-ref="VM_Config" timeout="15"/>
+	</flow>
+</mule>
