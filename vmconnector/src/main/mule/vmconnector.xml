@@ -21,6 +21,7 @@ http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/cu
 	<flow name="vmconnectorFlow1" doc:id="880490ea-e8fe-4356-b0e9-c88bc47002ee" >
 		<vm:listener doc:name="Listener" doc:id="1f614832-7609-4a27-a33c-2e1d039ae24d" config-ref="VM_Config" queueName="myque"/>
 		<logger level="INFO" doc:name="Logger" doc:id="2a23ccf1-5b1b-4bde-81f1-2eefad3cac3a" message="#[payload]"/>
+		<logger level="INFO" doc:name="Logger" doc:id="2a23ccf1-5b1b-4bde-81f1-2eefad3cac3a" message="#[hi]"/>
 	</flow>
 	<flow name="vmconnectorFlow2" doc:id="13392bd8-2d72-43f7-a37d-659bafcd35be" >
 		<http:listener doc:name="Listener" doc:id="0d061545-3ef8-4afd-84f5-51b69d38307b" config-ref="HTTP_Listener_config" path="consume"/>
